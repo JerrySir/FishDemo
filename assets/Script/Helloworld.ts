@@ -15,11 +15,20 @@ export default class Helloworld extends cc.Component {
     @property({type: cc.Prefab, displayName: "鱼塘里面球的Prefab"})
     bottomBallPrefab: cc.Prefab = null;
 
+    @property({type: cc.Node, displayName: "鱼塘Node"})
+    water: cc.Node = null;
+
     @property({type: cc.Prefab, displayName: "鱼的Prefab"})
     fishPrefab: cc.Prefab = null;
 
     @property({type: cc.SpriteAtlas, displayName: "鱼的资源图片"})
     fishAtlas: cc.SpriteAtlas = null;
+
+    @property({type: cc.AudioClip, displayName: "发射BottomBall的声音"})
+    hitAudio: cc.AudioClip = null;
+
+    @property({type: cc.AudioClip, displayName: "消除TopBall的声音"})
+    destroyAudio: cc.AudioClip = null;
 
     // 是否完成初始化
     _isInitComplete: boolean = false;
@@ -50,14 +59,15 @@ export default class Helloworld extends cc.Component {
     }
 
     start () {
-        // init logic
         this.generateTopBalls();
-        this.addKeyboardListener();
+        this.generateFishes();
+        // 生成全部球之后再开始监听键盘事件
+        // this.addKeyboardListener();
     }
 
     // 初始化鱼塘
 
-    // 初始化TopBall
+    // 生成TopBall
     generateTopBalls() {
         let interval = setInterval(function(){
             let randomNum = Math.ceil(Math.random()*(9+9));
@@ -73,13 +83,23 @@ export default class Helloworld extends cc.Component {
             this.gameBox.addChild(ball);
             ball.setPosition(randomPoint);
 
+            // 播放射出声音
+            cc.audioEngine.play(this.hitAudio, false, 1);
+
             this._topBallList.push(ball);
             if (this._topBallList.length >=20) {
                 clearInterval(interval);
-                // this.addKeyboardListener();
+                this.addKeyboardListener();
             }
         }.bind(this), 300)
-        
+    }
+    // 生成鱼儿
+    generateFishes() {
+        this.fishAtlas.getSpriteFrames().forEach(function(spriteFrameItem) {
+            let fish = cc.instantiate(this.fishPrefab);
+            fish.getComponent(cc.Sprite).spriteFrame = spriteFrameItem;
+            this.water.addChild(fish);
+        }.bind(this));
     }
     // 初始化键盘监听
     addKeyboardListener() {
@@ -109,6 +129,8 @@ export default class Helloworld extends cc.Component {
         let gameBoxPosition = this.gameBox.convertToNodeSpaceAR(cc.v2(0));
         bottomBall.setPosition(cc.v2({x: gameBoxPosition.x+this.gameBox.width/2, y:gameBoxPosition.y}));
         bottomBall.runAction(cc.spawn(cc.fadeIn(0.3), cc.moveTo(0.5,bottomBallPosition)))
+        // 播放射出声音
+        cc.audioEngine.play(this.hitAudio, false, 1);
 
         this._bottomBallList.push(bottomBall);
         // 达到消除条件
@@ -124,9 +146,14 @@ export default class Helloworld extends cc.Component {
                 if ((item.getChildByName("TagLabel").getComponent(cc.Label) as cc.Label).string === (bottomBallSum + '')) {
                     item.runAction(cc.sequence(cc.scaleTo(0.2, 0.8), cc.spawn(cc.scaleTo(0.1, 1.3), cc.fadeOut(0.1)), cc.callFunc((item)=> {
                         item.removeFromParent();
+                        // 播放消除声音
+                        cc.audioEngine.play(this.destroyAudio, false, 1);
+                        // 发出通知
+                        cc.systemEvent.emit('FishJump');
                     },this,item)))
                     // 立刻从数组中删除,防止动画未执行完再次消除
                     this._topBallList.splice(index, 1);
+                    
                     return;
                 }
             };

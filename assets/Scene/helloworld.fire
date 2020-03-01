@@ -81,10 +81,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 36
       },
       {
-        "__id__": 35
+        "__id__": 37
       }
     ],
     "_prefab": null,
@@ -378,7 +378,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 33
+        "__id__": 35
       }
     ],
     "_prefab": null,
@@ -1247,7 +1247,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 32
+        "__id__": 34
       }
     ],
     "_prefab": null,
@@ -1300,19 +1300,24 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Sprite",
+    "_name": "Fish",
     "_objFlags": 0,
     "_parent": {
       "__id__": 29
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 31
+      },
+      {
+        "__id__": 32
       }
     ],
-    "_prefab": null,
+    "_prefab": {
+      "__id__": 33
+    },
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -1367,7 +1372,7 @@
     "node": {
       "__id__": 30
     },
-    "_enabled": true,
+    "_enabled": false,
     "_materials": [
       {
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
@@ -1393,6 +1398,29 @@
       "__uuid__": "b31a2534-5478-49d7-b1e8-99205ea62350"
     },
     "_id": "18bdTtTfVHcI9f2xMZoiAk"
+  },
+  {
+    "__type__": "7ea24k6QO9J06HVgVphBOmN",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 30
+    },
+    "_enabled": true,
+    "label": null,
+    "text": "hello",
+    "_id": "29RITiTuZBYpH5mduwoajM"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 30
+    },
+    "asset": {
+      "__uuid__": "720d6119-c496-492b-835d-19ba082605b7"
+    },
+    "fileId": "efxktXDRVDZ4/jdtClKApg",
+    "sync": false
   },
   {
     "__type__": "cc.Widget",
@@ -1483,9 +1511,20 @@
     "bottomBallPrefab": {
       "__uuid__": "344012b3-e4c0-412d-91e0-90f100291c6f"
     },
-    "fishPrefab": null,
+    "water": {
+      "__id__": 29
+    },
+    "fishPrefab": {
+      "__uuid__": "720d6119-c496-492b-835d-19ba082605b7"
+    },
     "fishAtlas": {
       "__uuid__": "b31a2534-5478-49d7-b1e8-99205ea62350"
+    },
+    "hitAudio": {
+      "__uuid__": "22bc332b-d060-4349-b5a1-b76257bf5d28"
+    },
+    "destroyAudio": {
+      "__uuid__": "0d31b5ac-7b19-40ee-acc8-a51d078f01e7"
     },
     "_id": "62Kh+ZJZZKlbjU9JMCeigi"
   }
